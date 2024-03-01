@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodeapp
+  template:
+    metadata:
+      labels:
+        app: nodeapp
+    spec:
+      containers:
+        - name: nodeapp
+          image: sijomon3/nodejs:35
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                    key: mongodb-username
+                    name: mongo-mongodb
+            - name: MONGO_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                    key: mongodb-database
+                    name: mongo-mongodb
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                    key: mongodb-passwords
+                    name: mongo-mongodb
+            - name: MONGO_HOST
+              valueFrom:
+                secretKeyRef:
+                    key: mongodb-endpoint
+                    name: mongo-mongodb
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeapp
+spec:
+  type: LoadBalancer
+  selector:
+    app: nodeapp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3005
