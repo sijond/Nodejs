@@ -7,7 +7,7 @@ RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 
 # Copy package.json and package-lock.json to the /app directory
-COPY package.json package-lock.json ./
+COPY /nodeJsProject/package.json /nodeJsProject/package-lock.json ./
 
 # Install dependencies
 RUN npm install
