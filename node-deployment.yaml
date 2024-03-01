@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nodeapp
-          image: sijomon3/nodejs:35
+          image: sijomon3/nodejsapp:latest
           ports:
             - containerPort: 8080
           env:
